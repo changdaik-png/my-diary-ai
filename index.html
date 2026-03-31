@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>AI 일기 도우미</title>
+</head>
+
+<body>
+    <h1>AI 일기 도우미</h1>
+    <textarea id="diary" rows="8" cols="40" placeholder="오늘 있었던 일을 써 보세요"></textarea>
+    <br />
+    <button id="analyzeBtn">AI에게 물어보기</button>
+    <h2>AI의 한 줄 피드백</h2>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('analyzeBtn').addEventListener('click', async () => {
+            const diary = document.getElementById('diary').value;
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerText = 'AI가 생각하는 중...';
+
+            const res = await fetch('/api/analyze', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ diary }),
+            });
+
+            const data = await res.json();
+            resultDiv.innerText = data.feedback;
+        });
+    </script>
+</body>
+
+</html>
